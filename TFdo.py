@@ -1,22 +1,19 @@
+
 """
 1700554
-
-
 For this project I am building an Artificial Neural Network in python 3.7. I will be using the 
 Tensorflow Library, which is an open source 
-
 To see the pyplot images please use https://colab.research.google.com/notebooks/intro.ipynb 
-
-
 sources:
-https://www.tensorflow.org/datasets/catalog/fashion_mnist
 https://www.tensorflow.org/datasets/catalog/overview
+https://www.tensorflow.org/datasets/catalog/fashion_mnist
+https://www.tensorflow.org/api_docs/python/tf/keras/datasets/fashion_mnist/load_data?version=nightly
+
 """
 
 
 
 """ 
-
 Loading all relevant libraries
 
 """
@@ -24,9 +21,16 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
+import random
+
+"""
+loading the dataset 
 
 
-"""loading the dataset """
+the dataset is providied by fashon Minst, as of writing this is provideds us with 60,000 training images and 10,000 test images 
+
+The copyright for Fashion-MNIST is held by Zalando SE. Fashion-MNIST is licensed under the MIT license.
+"""
 
 fashionMinist = keras.datasets.fashion_mnist
 
@@ -41,7 +45,6 @@ fashionMinist = keras.datasets.fashion_mnist
 
 """
 We only have a total of 10 unique lables between 0-9, 
-
 0 = t-shirt
 1 = trouser
 2 = sweater
@@ -52,8 +55,6 @@ We only have a total of 10 unique lables between 0-9,
 7 = trainers
 8 = bag
 9 = boot
-
-
 """
 
 #plt.imshow(img)
@@ -68,20 +69,14 @@ print("In the testing images dataset you have " +  str(testImages.shape[0]) + " 
 
 
 """
-
 create the neural network model 
 
-    keras.layers.Flatten(inputShape=(28,28)), <== this is the input layer. the flatten methond will reduse the Dimensionality the images
-    
 
+    keras.layers.Flatten(inputShape=(28,28)), <== this is the input layer. the flatten methond will reduse the dimensionality the images
+    
     keras.layers.Dense(128, activation=tf.nn.relu) <== this is the hidden layer. The 128 refers to how many neurons I have and 'relu' is the activation function
 
     keras.layers.Dense(10, activation = tf.nn.softmax) <== this is the output layer. this only has 10 neurons as there are only 10 unique lables, 'softmax' is the activation function
-
-
-
-
-
 """
 
 model = keras.Sequential([
@@ -97,24 +92,14 @@ model = keras.Sequential([
 
 """
 compiling the model
-
 ______________________________________________
-
 ***NOTE***
-
-
 replace 
-
 optimizer = tf.optimizers.Adam(), 
-
 with 
-
 optimizer = tf.train.AdamOptimizer(),
-
-
 when using goole colab
-
- _____________________________________________
+______________________________________________
 """
 
 model.compile(
@@ -122,19 +107,23 @@ model.compile(
     optimizer = tf.optimizers.Adam(),
     loss  = "sparse_categorical_crossentropy", 
     metrics  = ["accuracy"]
-
-
+    
     )
 
 
 """ Training the model
 
+epochs are training cycles
+
+if epochs=5 then the AI has 5 training cycles to learn the training images.
 
 
 """
 
 
-model.fit(trainImages,trainLabels, epochs=1, batch_size = 32)
+model.fit(trainImages,trainLabels, 
+          epochs=1, 
+          batch_size = 32)
 
 
 """
@@ -148,22 +137,29 @@ model.evaluate(testImages, testLabels)
 making a classification
 """
 
+randominterget = random.randint(0,9992)
 
-predicitions = model.predict(testImages[0:9])
+randomintergetend = randominterget + 9
+
+predicitions = model.predict(testImages[randominterget:randomintergetend])
 
 
 
 print("This shows the category given to the NN: " )
-print(testLabels[0:9])
+print(testLabels[randominterget:randomintergetend])
 
 
 print("This shows the category predicted by the model: " )
 print( np.argmax(predicitions, axis=1))
 
 
-for x in range(0,9):
+
+"""for x in range(0,9):
     Image = testImages[x]
     Image = np.array(Image,dtype="float")
     pixels = Image.reshape((28,28))
     plt.imshow(testImages[x])
     plt.show()
+    
+"""
+
