@@ -46,10 +46,6 @@ def ArtAI(inputNeurons, numepochs,run):
 
     model.evaluate(testImages, testLabels)
 
-    randominterget = random.randint(0,9992)
-
-    randomintergetend = randominterget + 9
-
     predicitions = model.predict(testImages[:]) # use all
 
 
@@ -65,10 +61,6 @@ def ArtAI(inputNeurons, numepochs,run):
     print("In the training images dataset you have " + str (trainImages.shape[0] )+ " of " + str (trainImages.shape[1]) + "x" + str(trainImages.shape[2]) + "px images.")
     print(" ")
     print("In the testing images dataset you have " +  str(testImages.shape[0]) + " of " + str(testImages.shape[1]) + "x" + str(testImages.shape[2]) + "px images.")
-    print(" ")
-    print("random starting postition of the testImages Tuple was ", randominterget)
-    print(" ")
-    print("random ending postition of the testImages Tuple was   ", randomintergetend)
     print(" ")
     print("This shows the category given to the NN:        ", testLabels[:] )
     print(" ")
