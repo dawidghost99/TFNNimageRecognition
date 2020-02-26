@@ -1,3 +1,4 @@
+
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
@@ -39,9 +40,12 @@ def ArtAI(inputNeurons, numepochs,run):
 
 
 
-    model.fit(trainImages,trainLabels, 
-          epochs=numepochs, 
-          batch_size = 32)
+    preditction_history = model.fit(trainImages,trainLabels, 
+                            epochs=numepochs, 
+                             batch_size = 32,
+                             verbose=1, 
+                             validation_data=(trainImages, trainLabels))
+   
 
 
     model.evaluate(testImages, testLabels)
@@ -56,6 +60,74 @@ def ArtAI(inputNeurons, numepochs,run):
 
 
 
+
+    loss = preditction_history.history['loss']
+    val_loss = preditction_history.history['val_loss']
+
+    trainAccuracy = preditction_history.history['accuracy']
+
+
+
+    trainLoss = 0.0
+    testLoss = 0.0
+    trainAcu = 0.0
+
+
+    guess = []
+    same = 0.00
+    guess = np.argmax(predicitions, axis=1) 
+    
+    count =0
+
+
+    #training accuracy
+
+    for T in trainAccuracy:
+        trainAcu += T
+
+    trainAcu /= len(trainAccuracy)
+
+
+
+
+    # test prediction accuracy
+
+    for y in guess:
+       # print(y)
+        if testLabels[count] == y:
+            same+=1
+        count +=1
+
+    testAccu = (same / 10000)*100
+
+
+    #average train loss
+
+    for L in loss:
+        trainLoss += L
+
+    trainLoss /= len(loss)
+
+
+
+    # average test loss
+
+    for L in val_loss:
+        testLoss += L
+
+    testLoss /= len(val_loss)
+
+    # test accuracy
+
+
+
+    dirName = 'C:/Users/dawid/Desktop/FINAL AI/AImodels/model' + str(run)
+    os.mkdir(dirName)
+    model.save(dirName)
+
+
+
+    
     print("_________________________________________________________")
 
     print("In the training images dataset you have " + str (trainImages.shape[0] )+ " of " + str (trainImages.shape[1]) + "x" + str(trainImages.shape[2]) + "px images.")
@@ -65,49 +137,38 @@ def ArtAI(inputNeurons, numepochs,run):
     print("This shows the category given to the NN:        ", testLabels[:] )
     print(" ")
     print("This shows the category predicted by the model: ",  np.argmax(predicitions, axis=1) )
-
-    guess = []
-    same = 0.00
-    guess = np.argmax(predicitions, axis=1) 
-    
-    count =0
-
-    for y in guess:
-       # print(y)
-        if testLabels[count] == y:
-            same+=1
-        count +=1
-
     print("guess", guess )
-    
     tottime =  end- start
-
     print("time: ", tottime, " Seconds")
-
-
     print("same", same , " /10,000")
-
-    accu = (same / 10000)*100
-
-    print("accuracy: ",accu , "%")
-
-    #print("loss", model.loss())
+    print("accuracy: ",testAccu , "%")
 
     print("_________________________________________________________")
 
-    
 
-    dirName = 'C:/Users/Home/Desktop/FINAL AI/AImodels/model' + str(run)
-    os.mkdir(dirName)
-    model.save(dirName)
 
-    return(tottime, accu,)
 
-#ArtAI(128,1)
+
+
+
+
+    #       tms, training_accu, test_accu, training_loss,testing_loss 
+
+
+    return(tottime, trainAcu,testAccu ,trainLoss,testLoss)
+
+
+
+
+
+
+
+
 """
 times = end - start
 #x = np.arange(0, 5, times)
 y = np.sin(x)
 plt.plot(x, y)
+plt.show()
 """
-#plt.show()
+
