@@ -5,21 +5,22 @@ import csv
 
 
 
-epoch = 2   
+epoch = 40  
 
-in_neurons = 8
+in_neurons = 64
 
-for x in range(3):
+for x in range(5):
 
 
-    tms, accu= ai.ArtAI(in_neurons,epoch,x)
+    tms, training_accu, test_accu, training_loss, testing_loss = ai.ArtAI(in_neurons,epoch,x)
 
     with open('results.csv', 'a') as file:
         writer = csv.writer(file)
-        #writer.writerow(["model: ", "Input Neurons ", "Epochs", "Time ", "Accuracy"])
-        writer.writerow([x, in_neurons, epoch,tms,accu ])
-    epoch += 1
-    in_neurons += 1
+        #writer.writerow(["model: ", "Input Neurons ", "Epochs", "Time", "Accuracy"])
+        writer.writerow([x, in_neurons, epoch,tms,training_accu,test_accu,training_loss,testing_loss ])
+    #epoch += 10
+    in_neurons += 64
+
 
 
 
