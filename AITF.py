@@ -60,7 +60,7 @@ def ArtAI(inputNeurons, numepochs,run, LR):
 create the neural network model 
     keras.layers.Flatten(inputShape=(28,28)), <== this is the input layer. the flatten methond will reduse the Dimensionality the images
     
-    keras.layers.Dense(128, activation=tf.nn.relu) <== this is the hidden layer. The 128 refers to how many neurons I have and 'relu' is the activation function
+    keras.layers.Dense(128, activation=tf.nn.relu) <== this is the hidden layer. The inputNeurons refers to how many neurons I have in this layer and 'relu' is the activation function
     keras.layers.Dense(10, activation = tf.nn.softmax) <== this is the output layer. this only has 10 neurons as there are only 10 unique lables, 'softmax' is the activation function
 """
 
@@ -86,7 +86,7 @@ replace
 optimizer = tf.optimizers.Adam(), 
 with 
 optimizer = tf.train.AdamOptimizer(),
-when using goole colab
+when using google colab
  _____________________________________________
 """
 
@@ -99,7 +99,7 @@ when using goole colab
 
     model.compile(
     
-    optimizer = tf.optimizers.Nadam(learning_rate=LR),  
+    optimizer = tf.optimizers.Adamax(learning_rate=LR),  
     loss  = "sparse_categorical_crossentropy", 
     metrics  = ["accuracy"]
     
